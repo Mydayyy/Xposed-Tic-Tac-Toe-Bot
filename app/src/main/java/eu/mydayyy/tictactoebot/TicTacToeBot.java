@@ -1,27 +1,11 @@
 package eu.mydayyy.tictactoebot;
 
 import android.content.Context;
-import android.content.res.XModuleResources;
-import android.content.res.XResources;
-import android.os.Looper;
 
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-import android.os.Handler;
-
-import javax.xml.xpath.XPath;
-
-import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
-import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import de.robv.android.xposed.callbacks.XC_InitPackageResources;
-import de.robv.android.xposed.callbacks.XC_LoadPackage;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 import static eu.mydayyy.tictactoebot.Util.delay;

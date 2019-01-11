@@ -10,3 +10,6 @@ to lose the match.
 
 You can see a totally eventful and exciting video of the bot playing here: https://www.youtube.com/watch?v=KF2UqH_NrF4
 
+## Build
+
+When building you need to set the default activity to none.

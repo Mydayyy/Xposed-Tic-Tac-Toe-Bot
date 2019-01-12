@@ -186,6 +186,17 @@ public class TicTacToeBot implements IXposedHookLoadPackage {
         return movesLeft;
     }
 
+    private boolean isBoardEmpty(byte[][] board) {
+        for(int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                if (board[y][x] != (byte) 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     private byte[][] makeLastMove(byte[][] board, byte forPlayer) {
         for(int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
@@ -301,7 +312,14 @@ public class TicTacToeBot implements IXposedHookLoadPackage {
                         }
                     }
 
-                    double[] move = minimax(board, 0, player, player);
+                    double[] move;
+                    if(isBoardEmpty(board)) {
+                        int x = (int) Math.floor(Math.random() * 4);
+                        int y = (int) Math.floor(Math.random() * 4);
+                        move = new double[]{x, y, 10};
+                    } else {
+                        move = minimax(board, 0, player, player);
+                    }
 
                     Object stage = XposedHelpers.getObjectField(param.thisObject, "stage");
                     Object root = XposedHelpers.callMethod(stage, "getRoot");

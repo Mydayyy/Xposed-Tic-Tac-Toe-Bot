@@ -153,11 +153,11 @@ public class TicTacToeBot implements IXposedHookLoadPackage {
         }, 1000);
     }
 
-    private double evalBoard(byte[][] board, int depth) {
-        if(isWinning(board, (byte) 1)) {
+    private double evalBoard(byte[][] board, int depth, byte me) {
+        if(isWinning(board, me)) {
             return 10.0 - depth;
         }
-        if(isWinning(board, (byte) 2)) {
+        if(isWinning(board, me == (byte) 1 ? (byte) 2 : (byte) 1)) {
             return depth - 10.0;
         }
         return 0.0;
@@ -227,13 +227,13 @@ public class TicTacToeBot implements IXposedHookLoadPackage {
             return value
      */
 
-    private double[] minimax(byte[][] board, int depth, byte player) {
+    private double[] minimax(byte[][] board, int depth, byte player, byte me) {
         if(isDraw(board) || isWinning(board, (byte) 1) || isWinning(board, (byte) 2)) {
-            return new double[]{-1, -1, evalBoard(board, depth)};
+            return new double[]{-1, -1, evalBoard(board, depth, me)};
         }
 
         double[] bestMove;
-        if(player == 1) {
+        if(player == me) {
             bestMove = new double[]{-1, -1, Double.NEGATIVE_INFINITY};
         } else {
             bestMove = new double[]{-1, -1, Double.POSITIVE_INFINITY};
@@ -245,11 +245,11 @@ public class TicTacToeBot implements IXposedHookLoadPackage {
                     continue;
                 }
                 board[y][x] = player;
-                double[] score = minimax(board, depth+1, player == (byte) 1 ? (byte) 2 : (byte) 1);
+                double[] score = minimax(board, depth+1, player == (byte) 1 ? (byte) 2 : (byte) 1, me);
                 board[y][x] = 0;
                 score[0] = x;
                 score[1] = y;
-                if(player == (byte) 1) {
+                if(player == me) {
                     if(score[2] > bestMove[2]) {
                         bestMove = score;
                     }
@@ -301,7 +301,7 @@ public class TicTacToeBot implements IXposedHookLoadPackage {
                         }
                     }
 
-                    double[] move = minimax(board, 0, player);
+                    double[] move = minimax(board, 0, player, player);
 
                     Object stage = XposedHelpers.getObjectField(param.thisObject, "stage");
                     Object root = XposedHelpers.callMethod(stage, "getRoot");
